@@ -14,14 +14,14 @@ module Rack
             end
             attr_missing!
           rescue AttrRequired::AttrMissing => e
-            raise VerificationFailed.new("#{self.class.name.demodulize} Invalid: #{e.message}")
+            raise VerificationFailed.new("#{Util.demodulize(self.class.name)} Invalid: #{e.message}")
           end
 
           def verify!(expected)
             if expected == self.calculate
               :verified
             else
-              raise VerificationFailed.new("#{self.class.name.demodulize} Invalid")
+              raise VerificationFailed.new("#{Util.demodulize(self.class.name)} Invalid")
             end
           end
 

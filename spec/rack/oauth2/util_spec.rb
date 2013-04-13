@@ -61,12 +61,12 @@ describe Rack::OAuth2::Util do
 
     context 'when location = :fragment' do
       let(:location) { :fragment }
-      it { should == "#{base_uri}##{util.compact_hash(params).to_query}" }
+      it { should == "#{base_uri}##{util.to_query(util.compact_hash(params))}" }
     end
 
     context 'when location = :query' do
       let(:location) { :query }
-      it { should == "#{base_uri}?#{util.compact_hash(params).to_query}" }
+      it { should == "#{base_uri}?#{util.to_query(util.compact_hash(params))}" }
     end
   end
 

@@ -6,7 +6,7 @@ module Rack
           attr_optional :raw_body
 
           def calculate
-            return nil unless raw_body.present?
+            return nil unless !raw_body.blank?
             
             OpenSSL::Digest::SHA256.new.digest(raw_body).unpack('H*').first
           end

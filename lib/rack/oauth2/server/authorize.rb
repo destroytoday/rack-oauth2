@@ -47,7 +47,7 @@ module Rack
           end
 
           def verify_redirect_uri!(pre_registered, allow_partial_match = false)
-            @verified_redirect_uri = if redirect_uri.present?
+            @verified_redirect_uri = if !redirect_uri.blank?
               verified = Array(pre_registered).any? do |_pre_registered_|
                 if allow_partial_match
                   Util.uri_match?(_pre_registered_, redirect_uri)
@@ -60,7 +60,7 @@ module Rack
               else
                 bad_request! 'Invalid redirect_uri is given'
               end
-            elsif pre_registered.present? && Array(pre_registered).size == 1 && !allow_partial_match
+            elsif !pre_registered.blank? && Array(pre_registered).size == 1 && !allow_partial_match
               Array(pre_registered).first
             else
               bad_request! 'No redirect_uri is given'

@@ -12,7 +12,7 @@ module Rack
           end
 
           def finish
-            if redirect_uri.present? && protocol_params_location.present?
+            if !redirect_uri.blank? && !protocol_params_location.blank?
               super do |response|
                 response.redirect Util.redirect_uri(redirect_uri, protocol_params_location, protocol_params)
               end
