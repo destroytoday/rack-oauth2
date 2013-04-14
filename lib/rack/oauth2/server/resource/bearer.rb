@@ -23,7 +23,7 @@ module Rack
             end
 
             def oauth2?
-              (access_token_in_header || !access_token_in_payload).blank?
+              !(access_token_in_header || access_token_in_payload).blank?
             end
 
             def access_token_in_header

@@ -2,6 +2,7 @@ require 'rack'
 require 'multi_json'
 require 'httpclient'
 require 'logger'
+#require 'active_support/core_ext'
 require 'attr_required'
 require 'attr_optional'
 
@@ -42,8 +43,8 @@ module Rack
       _http_client_ = HTTPClient.new(
         :agent_name => agent_name
       )
-      http_config.try(:call, _http_client_)
-      local_http_config.try(:call, _http_client_) unless local_http_config.nil?
+      Util.try(http_config, :call, _http_client_)
+      Util.try(local_http_config, :call, _http_client_) unless local_http_config.nil?
       _http_client_.request_filter << Debugger::RequestFilter.new if debugging?
       _http_client_
     end

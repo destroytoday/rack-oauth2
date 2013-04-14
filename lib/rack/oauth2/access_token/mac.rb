@@ -9,7 +9,7 @@ module Rack
         def initialize(attributes = {})
           super(attributes)
           @issued_at = Time.now.utc
-          @ts_expires_in ||= 5.minutes
+          @ts_expires_in ||= 300
         end
 
         def token_response
@@ -98,6 +98,7 @@ module Rack
   end
 end
 
+require 'securerandom'
 require 'rack/oauth2/access_token/mac/verifier'
 require 'rack/oauth2/access_token/mac/sha256_hex_verifier'
 require 'rack/oauth2/access_token/mac/signature'

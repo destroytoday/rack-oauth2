@@ -90,7 +90,7 @@ module Rack
 
       def handle_success_response(response)
         token_hash = parse_json response.body
-        case token_hash[:token_type].try(:downcase)
+        case Util.try(token_hash[:token_type], :downcase)
         when 'bearer'
           AccessToken::Bearer.new(token_hash)
         when 'mac'
@@ -102,7 +102,7 @@ module Rack
         end
       rescue MultiJson::DecodeError
         # NOTE: Facebook support (They don't use JSON as token response)
-        AccessToken::Legacy.new Rack::Utils.parse_nested_query(response.body).with_indifferent_access
+        AccessToken::Legacy.new Util.symbolize(Rack::Utils.parse_nested_query(response.body))
       end
 
       def handle_error_response(response)
@@ -114,7 +114,7 @@ module Rack
 
       def parse_json(raw_json)
         # MultiJson.parse('') returns nil when using MultiJson::Adapters::JsonGem
-        MultiJson.load(raw_json).try(:with_indifferent_access) || {}
+        Util.symbolize(MultiJson.load(raw_json)) || {}
       end
     end
   end

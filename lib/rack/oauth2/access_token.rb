@@ -4,7 +4,6 @@ module Rack
       include AttrRequired, AttrOptional
       attr_required :access_token, :token_type, :httpclient
       attr_optional :refresh_token, :expires_in, :scope
-      Util.delegate :get, :post, :put, :delete, :to => :httpclient
 
       def initialize(attributes = {})
         (required_attributes + optional_attributes).each do |key|
@@ -14,6 +13,22 @@ module Rack
         @httpclient = Rack::OAuth2.http_client("#{self.class} (#{VERSION})")
         @httpclient.request_filter << Authenticator.new(self)
         attr_missing!
+      end
+
+      def get(*args)
+        @httpclient.get(*args)
+      end
+
+      def post(*args)
+        @httpclient.post(*args)
+      end
+
+      def put(*args)
+        @httpclient.put(*args)
+      end
+
+      def delete(*args)
+        @httpclient.delete(*args)
       end
 
       def token_response(options = {})
